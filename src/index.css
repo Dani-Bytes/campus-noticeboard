@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Newsreader:wght@300;400;500&family=Syne:wght@600;700&display=swap');
 
 :root {
-  --bg: #f6f2ea;
-  --surface: #fffaf3;
-  --text: #2b2a29;
-  --muted: #6d655d;
-  --accent: #e36a2d;
-  --accent-dark: #9f3c17;
-  --teal: #2f6e73;
-  --olive: #9cab62;
-  --border: rgba(43, 42, 41, 0.12);
-  --shadow: 0 16px 40px rgba(33, 26, 19, 0.08);
+  --bg: #f4efe7;
+  --surface: #fff9f0;
+  --surface-strong: #fff3e2;
+  --text: #2b2622;
+  --muted: #6b635c;
+  --accent: #d6632c;
+  --accent-dark: #8f3416;
+  --teal: #2f6f77;
+  --olive: #8ea05e;
+  --border: rgba(43, 38, 34, 0.12);
+  --shadow: 0 18px 48px rgba(29, 22, 17, 0.1);
+  --glow: 0 0 0 1px rgba(227, 106, 45, 0.12), 0 16px 28px rgba(227, 106, 45, 0.18);
   --sans: 'Newsreader', serif;
   --display: 'Syne', sans-serif;
   --mono: 'JetBrains Mono', monospace;
@@ -29,8 +31,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(227, 106, 45, 0.12), transparent 45%),
-    radial-gradient(circle at 20% 20%, rgba(47, 110, 115, 0.12), transparent 50%),
+  background: radial-gradient(circle at top, rgba(227, 106, 45, 0.14), transparent 46%),
+    radial-gradient(circle at 25% 18%, rgba(47, 110, 115, 0.12), transparent 52%),
+    radial-gradient(circle at 90% 10%, rgba(142, 160, 94, 0.12), transparent 40%),
     var(--bg);
 }
 
@@ -73,6 +76,16 @@ ul {
   border-radius: 24px;
   background: var(--surface);
   box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.topbar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(227, 106, 45, 0.1), transparent 55%);
+  pointer-events: none;
 }
 
 .subtitle {
@@ -89,15 +102,22 @@ ul {
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .panel {
   display: flex;
-  flex-direction: column;
-  gap: 18px;
+  justify-content: center;
+}
+
+.panel .card {
+  width: min(720px, 100%);
+}
+
+.auth-panel {
+  padding-top: 4px;
 }
 
 .card {
@@ -109,6 +129,12 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 18px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 50px rgba(29, 22, 17, 0.12);
 }
 
 .card-header h2 {
@@ -141,6 +167,15 @@ textarea {
   font: 15px/1.4 var(--sans);
   background: white;
   color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(227, 106, 45, 0.55);
+  box-shadow: 0 0 0 3px rgba(227, 106, 45, 0.15);
 }
 
 textarea {
@@ -163,13 +198,13 @@ textarea {
   font-family: var(--display);
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .btn.primary {
   background: var(--accent);
   color: white;
-  box-shadow: 0 10px 20px rgba(227, 106, 45, 0.2);
+  box-shadow: var(--glow);
 }
 
 .btn.ghost {
@@ -185,6 +220,7 @@ textarea {
 
 .btn:hover {
   transform: translateY(-1px);
+  filter: brightness(0.98);
 }
 
 .btn:disabled {
@@ -194,11 +230,12 @@ textarea {
 }
 
 .helper {
-  border: 1px dashed rgba(47, 110, 115, 0.35);
-  background: rgba(47, 110, 115, 0.08);
+  border: 1px solid var(--border);
+  background: white;
   border-radius: 18px;
   padding: 18px;
   color: var(--muted);
+  box-shadow: var(--shadow);
 }
 
 .helper h3 {
@@ -244,6 +281,48 @@ textarea {
   gap: 18px;
 }
 
+.notice-shell {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.hero-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px 28px;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+}
+
+.hero-strip h2 {
+  font-size: 2rem;
+  margin: 8px 0 6px;
+}
+
+.hero-stats {
+  display: grid;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-family: var(--display);
+  font-weight: 600;
+}
+
 .board-header {
   display: flex;
   justify-content: space-between;
@@ -265,6 +344,7 @@ textarea {
 .notice-grid {
   display: grid;
   gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .notice-card {
@@ -274,6 +354,12 @@ textarea {
   background: white;
   display: grid;
   gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notice-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(29, 22, 17, 0.1);
 }
 
 .notice-head {
@@ -307,6 +393,15 @@ textarea {
   font-size: 0.85rem;
 }
 
+.rules-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.rules-panel .helper {
+  width: min(720px, 100%);
+}
+
 .empty {
   padding: 16px;
   text-align: center;
@@ -317,7 +412,7 @@ textarea {
 
 @media (max-width: 960px) {
   .layout {
-    grid-template-columns: 1fr;
+    gap: 22px;
   }
 
   .topbar {
@@ -332,4 +427,26 @@ textarea {
   .board-header {
     flex-direction: column;
   }
+
+  .hero-strip {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.topbar,
+.card,
+.board {
+  animation: rise 0.6s ease both;
 }

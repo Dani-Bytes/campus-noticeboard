@@ -94,15 +94,17 @@ function NoticeBoard({ session, categories }) {
       ) : filteredNotices.length === 0 ? (
         <div className="empty">No notices yet for this category.</div>
       ) : (
-        <div className="notice-grid">
-          {filteredNotices.map((notice) => (
-            <NoticeCard
-              key={notice.id}
-              notice={notice}
-              session={session}
-              onDelete={handleDelete}
-            />
-          ))}
+        <div className="notice-shell">
+          <div className="notice-grid">
+            {filteredNotices.map((notice) => (
+              <NoticeCard
+                key={notice.id}
+                notice={notice}
+                session={session}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
         </div>
       )}
     </section>
